@@ -59,6 +59,7 @@ def updateStatus(app, tekst):
 
 def skiniSve(app, storePath):
     _thread.start_new_thread(skiniSveT, (app,storePath,))
+    #TODO testirati skidanje u vise threadova
 
 def skiniSveT(app, storePath):
     c1 = datetime.datetime.now()
