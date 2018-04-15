@@ -9,7 +9,7 @@ class Video:
     def download(self,storePath):
         yt = pytube.YouTube(self.url)
         self.stream = yt.streams.filter(only_audio=True).first()
-        self.stream.download("C:/Users/Vjekoslav/Documents/test")
+        self.stream.download(storePath)
         #TODO doraditi slanje lokacije spremanja iz config filea
 
 

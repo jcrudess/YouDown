@@ -10,11 +10,7 @@ def izradiListu(url):
     soup = BeautifulSoup(data, "html.parser")
 
     for i in soup.find_all("td", {"class":"pl-video-title"}):
-        br += 1
         lista.append("http://www.youtube.com"+i.a.get('href').split('&')[0])
-        if br == 5:
-            break
-
     return lista
 
 def provjeriURL (url):
