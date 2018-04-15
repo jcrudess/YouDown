@@ -32,10 +32,7 @@ def dodajT(app, url, value = None):
     elif provjera == 'playlist':
         lista = izradiListu(url) ##parsiraj html i za svaki link pokreni proceduru za dodavanje
         for i in lista:
-            br+=1
             dodajT(app, i, 'video')
-            if br >= 5:
-                break
 
     elif provjera=='playlist_dorada':    ##doradi link i pokreni rekurzivno kao da se poslao originalni playlist link
         dodajT(app, "http://www.youtube.com/playlist?"+url.split('&')[1], 'playlist')
@@ -84,7 +81,7 @@ def skiniSveT(app):
             print("break petlje")
             break
 
-        if len(threading.enumerate())==4:
+        if len(threading.enumerate())==int(app.threadLimit) + 2:
         #plus 2 jer računam main thread + pozivajući master thread
             pass
         else:
@@ -107,7 +104,9 @@ def MP3Convert(storepath, title):
     newfpath = storepath+'"'+title+mp3+'"'
     ffmpegPath = "C:/Users/Vjekoslav/Desktop/KOD/Python/YouDown/ffmpeg.exe"
     os.system(ffmpegPath+' -i '+fpath+' '+newfpath)
-    os.system('del '+fpath)
+    print("unutar konverzija gotova")
+    str = 'del '+'"'+storepath+title+mp4+'"'
+    os.system(str.replace('/', '\\'))
 
 
 
