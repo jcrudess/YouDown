@@ -14,6 +14,8 @@ def dodajT(app, url, value = None):
     else:
         provjera = value
 
+    br = 0
+
     if provjera=='video':
         video = Video(url)
 
@@ -29,7 +31,11 @@ def dodajT(app, url, value = None):
     elif provjera == 'playlist':
         lista = izradiListu(url) ##parsiraj html i za svaki link pokreni proceduru za dodavanje
         for i in lista:
+            br+=1
             dodajT(app, i, 'video')
+            if br >= 5:
+                break
+
     elif provjera=='playlist_dorada':    ##doradi link i pokreni rekurzivno kao da se poslao originalni playlist link
         dodajT(app, "http://www.youtube.com/playlist?"+url.split('&')[1], 'playlist')
     else:
@@ -48,6 +54,8 @@ def brisi(app, opcija):
             updateStatus(app, 'Svi zapisi su obrisani!')
         for i in selekt:
             index = i - pos
+            naziv = app.lista.get(index)
+            del app.mainDict[naziv]
             app.lista.delete(index)
             pos+=1
     else:
