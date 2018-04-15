@@ -1,11 +1,13 @@
 from Video import *
 import _thread
 from pomocni import *
-import datetime
+import threading
+import os
 
 def dodaj(app, url):
     updateStatus(app, 'Dodajem..........')
     _thread.start_new_thread(dodajT, (app, url,))
+
 
 def dodajT(app, url, value = None):
 
@@ -64,16 +66,50 @@ def updateStatus(app, tekst):
 
 
 def skiniSve(app):
-    _thread.start_new_thread(skiniSveT, (app,))
-    #TODO testirati skidanje u vise threadova
+    t = threading.Thread(target = skiniSveT, args = (app,))
+    t.start()
+    #_thread.start_new_thread(skiniSveT, (app,))
+
+
 
 def skiniSveT(app):
-    c1 = datetime.datetime.now()
+    threadovi = []
+    br = 0
     for i in app.mainDict:
-        c1 = datetime.datetime.now()
-        print(i + ' počinjem ' + str(c1))
-        updateStatus(app, 'Skidam '+i+'..).....')
-        app.mainDict[i].download(app.storePath)
-        c2 = datetime.datetime.now()
-        print(i + ' počinjem ' + str(c2))
-    updateStatus(app, 'Skidanje završeno')
+        thr = threading.Thread(target = downThread, args = (app, i))
+        threadovi.append(thr)
+
+    while True:
+        if br==len(threadovi):
+            print("break petlje")
+            break
+
+        if len(threading.enumerate())==4:
+        #plus 2 jer računam main thread + pozivajući master thread
+            pass
+        else:
+            threadovi[br].start()
+            br+=1
+
+
+def downThread(app, title):
+    print("Počinjem "+title)
+    app.mainDict[title].download(app.storePath)
+    print("Završavam "+title)
+    print("Počinjem konverziju "+title)
+    MP3Convert(app.storePath, title)
+    print("Završavam konverziju "+title)
+
+def MP3Convert(storepath, title):
+    mp4 = '.mp4'
+    mp3 = '.mp3'
+    fpath = storepath+'"'+title+mp4+'"'
+    newfpath = storepath+'"'+title+mp3+'"'
+    ffmpegPath = "C:/Users/Vjekoslav/Desktop/KOD/Python/YouDown/ffmpeg.exe"
+    os.system(ffmpegPath+' -i '+fpath+' '+newfpath)
+    os.system('del '+fpath)
+
+
+
+
+

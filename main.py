@@ -1,18 +1,16 @@
-import app
 import configparser
+import app
+import os
 
 config = configparser.RawConfigParser()
-
-#TODO konverzija u MP3
 
 config.read('settings.cfg')
 
 
 storePath = config.get('Postavke', 'SAVE_LOKACIJA')
+threadLimit = config.get('Postavke', 'THREAD_LIMIT')
 
-app = app.App(storePath)
-
-
+app = app.App(storePath, threadLimit)
 
 
 

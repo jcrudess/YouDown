@@ -11,8 +11,9 @@ class App:
     appSet = None
 
 
-    def __init__(self, storePath):
+    def __init__(self, storePath, threadLimit):
         self.storePath = storePath
+        self.threadLimit = threadLimit
         print(self.storePath)
         self.win = tkinter.Tk()
         self.win.title("YouDown v0.1.1")
