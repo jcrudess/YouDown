@@ -26,7 +26,6 @@ def dodajT(app, url, value = None):
         ##updateaj status
         updateStatus(app, tekst)
         ##dodaj u dictionary
-        #TODO kako složiti brisanje? dodati u tuple sa indeksom
         app.mainDict[tekst] = video
     elif provjera == 'playlist':
         lista = izradiListu(url) ##parsiraj html i za svaki link pokreni proceduru za dodavanje
@@ -44,7 +43,6 @@ def dodajT(app, url, value = None):
 
 def brisi(app, opcija):
     pos = 0
-    #TODO dodaj brisanje iz dictionarya
     if app.lista.curselection() or opcija == 'svi':
         if opcija == 'oznaceni':
             selekt = app.lista.curselection()
@@ -65,18 +63,17 @@ def updateStatus(app, tekst):
     app.statusLabel.config(text = tekst)
 
 
-def skiniSve(app, storePath):
-    _thread.start_new_thread(skiniSveT, (app,storePath,))
+def skiniSve(app):
+    _thread.start_new_thread(skiniSveT, (app,))
     #TODO testirati skidanje u vise threadova
 
-def skiniSveT(app, storePath):
+def skiniSveT(app):
     c1 = datetime.datetime.now()
-    print(c1)
     for i in app.mainDict:
         c1 = datetime.datetime.now()
         print(i + ' počinjem ' + str(c1))
         updateStatus(app, 'Skidam '+i+'..).....')
-        app.mainDict[i].download(storePath)
+        app.mainDict[i].download(app.storePath)
         c2 = datetime.datetime.now()
         print(i + ' počinjem ' + str(c2))
     updateStatus(app, 'Skidanje završeno')
